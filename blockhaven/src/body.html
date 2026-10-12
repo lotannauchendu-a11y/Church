@@ -1,0 +1,166 @@
+<div id="app">
+  <canvas id="gl"></canvas>
+  <div class="fx" id="fx-water"></div>
+  <div class="fx" id="fx-vignette"></div>
+  <div class="fx" id="fx-hurt"></div>
+
+  <div id="hud" hidden>
+    <div id="crosshair"></div>
+    <div id="clock"><i></i><span></span></div>
+    <div id="debug" hidden></div>
+    <div id="toast"></div>
+    <div id="bottom">
+      <div id="itemname"></div>
+      <div id="status"><div id="hearts"></div><div id="bubbles"></div></div>
+      <div id="hotbar"></div>
+    </div>
+  </div>
+
+  <div id="touch" hidden>
+    <div id="stick"><div id="knob"></div></div>
+    <button class="tbtn" id="t-jump" type="button">JUMP</button>
+    <button class="tbtn" id="t-down" type="button">SNEAK</button>
+    <button class="tbtn" id="t-inv" type="button">BAG</button>
+    <button class="tbtn" id="t-pause" type="button">II</button>
+  </div>
+
+  <section id="title" class="screen">
+    <div class="logo">
+      <h1>Blockhaven</h1>
+      <div class="tag">Dig deep. Build high. Survive the night.</div>
+    </div>
+    <div class="panel" id="menu-main">
+      <div class="save-card" id="save-card" hidden>
+        <span class="label">Saved world</span>
+        <b id="save-name"></b>
+        <span id="save-meta"></span>
+      </div>
+      <button class="btn primary" id="b-continue" type="button" hidden>Continue</button>
+      <button class="btn" id="b-new" type="button">New world</button>
+      <div class="row">
+        <button class="btn quiet" id="b-settings" type="button">Settings</button>
+        <button class="btn quiet" id="b-help" type="button">Controls</button>
+      </div>
+    </div>
+    <div class="panel" id="menu-new" hidden>
+      <h2>New world</h2>
+      <div class="field">
+        <label class="label" for="in-name">World name</label>
+        <input type="text" id="in-name" maxlength="28" value="New Haven" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label class="label" for="in-seed">Seed</label>
+        <input type="text" id="in-seed" maxlength="32" placeholder="Leave empty for a random world" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <span class="label">Game mode</span>
+        <div class="seg" id="seg-mode">
+          <button type="button" data-mode="survival" class="on">Survival</button>
+          <button type="button" data-mode="creative">Creative</button>
+        </div>
+        <div class="hint" id="mode-hint">Gather resources, craft tools and keep the zombies away at night.</div>
+      </div>
+      <div class="hint warn" id="new-warn" hidden>Creating a new world replaces your saved world.</div>
+      <div class="row">
+        <button class="btn quiet" id="b-new-back" type="button">Back</button>
+        <button class="btn primary" id="b-create" type="button">Create world</button>
+      </div>
+    </div>
+    <div class="panel" id="menu-help" hidden>
+      <h2>Controls</h2>
+      <div class="keys">
+        <kbd>W A S D</kbd><span>Move</span>
+        <kbd>Mouse</kbd><span>Look around</span>
+        <kbd>Left click</kbd><span>Mine block / attack (hold)</span>
+        <kbd>Right click</kbd><span>Place block / eat / use table</span>
+        <kbd>Space</kbd><span>Jump, swim up. Double-tap to fly (Creative)</span>
+        <kbd>Shift</kbd><span>Sneak, fly down</span>
+        <kbd>Ctrl</kbd><span>Sprint (or double-tap W)</span>
+        <kbd>1 – 9 / Wheel</kbd><span>Choose hotbar slot</span>
+        <kbd>E</kbd><span>Inventory and crafting</span>
+        <kbd>Q</kbd><span>Drop held item</span>
+        <kbd>Middle click</kbd><span>Pick block</span>
+        <kbd>F3</kbd><span>Debug info</span>
+        <kbd>Esc</kbd><span>Pause</span>
+      </div>
+      <p class="hint">On a phone: drag the left pad to walk, drag anywhere else to look, tap to place, hold to mine.</p>
+      <button class="btn" id="b-help-back" type="button">Back</button>
+    </div>
+    <div class="foot">Survival tip: punch a tree, craft planks, then a crafting table.</div>
+  </section>
+
+  <section id="loading" class="screen dim" hidden>
+    <div class="panel">
+      <h2 id="load-title">Generating terrain</h2>
+      <div class="bar"><i id="load-bar"></i></div>
+      <p id="load-text">Raising mountains…</p>
+      <button class="btn primary" id="b-play" type="button" hidden>Play</button>
+    </div>
+  </section>
+
+  <section id="pause" class="screen dim" hidden>
+    <div class="panel">
+      <h2>Paused</h2>
+      <button class="btn primary" id="b-resume" type="button">Back to game</button>
+      <button class="btn" id="b-p-settings" type="button">Settings</button>
+      <button class="btn" id="b-p-help" type="button">Controls</button>
+      <button class="btn quiet" id="b-quit" type="button">Save and quit to title</button>
+      <p class="hint" id="pause-hint">Your world saves automatically.</p>
+    </div>
+  </section>
+
+  <section id="help2" class="screen dim" hidden></section>
+
+  <section id="settings" class="screen dim" hidden>
+    <div class="panel">
+      <h2>Settings</h2>
+      <div class="scroll">
+        <div class="set"><label for="s-dist">Render distance</label><output id="o-dist"></output><input type="range" id="s-dist" min="3" max="16" step="1"></div>
+        <div class="set"><label for="s-fov">Field of view</label><output id="o-fov"></output><input type="range" id="s-fov" min="55" max="110" step="1"></div>
+        <div class="set"><label for="s-sens">Mouse sensitivity</label><output id="o-sens"></output><input type="range" id="s-sens" min="0.2" max="3" step="0.05"></div>
+        <div class="set"><label for="s-vol">Sound volume</label><output id="o-vol"></output><input type="range" id="s-vol" min="0" max="1" step="0.05"></div>
+        <div class="set"><label for="s-scale">Resolution</label><output id="o-scale"></output><input type="range" id="s-scale" min="0.5" max="1" step="0.05"></div>
+        <label class="toggle" for="s-shadows"><span>Sun shadows</span><input type="checkbox" class="switch" id="s-shadows"></label>
+        <label class="toggle" for="s-hq"><span>High-quality shadows</span><input type="checkbox" class="switch" id="s-hq"></label>
+        <label class="toggle" for="s-music"><span>Ambient music</span><input type="checkbox" class="switch" id="s-music"></label>
+        <label class="toggle" for="s-invert"><span>Invert mouse</span><input type="checkbox" class="switch" id="s-invert"></label>
+        <label class="toggle" for="s-bob"><span>View bobbing</span><input type="checkbox" class="switch" id="s-bob"></label>
+      </div>
+      <button class="btn primary" id="b-set-done" type="button">Done</button>
+    </div>
+  </section>
+
+  <section id="inventory" class="screen dim" hidden>
+    <div class="panel">
+      <div class="inv-head">
+        <h2 id="inv-title">Inventory</h2>
+        <button class="btn quiet" id="b-inv-close" type="button">Close</button>
+      </div>
+      <div class="inv-cols">
+        <div class="inv-side">
+          <span class="label" id="inv-left-label">Crafting</span>
+          <div class="recipes" id="recipes"></div>
+          <div class="palette" id="palette" hidden></div>
+          <span class="hint" id="station-hint"></span>
+        </div>
+        <div class="inv-side">
+          <span class="label">Backpack</span>
+          <div class="grid9" id="inv-main"></div>
+          <span class="label hotrow">Hotbar</span>
+          <div class="grid9" id="inv-hot"></div>
+          <span class="hint" id="inv-hint">Click to pick up and place. Right-click splits a stack. Shift-click moves it.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="death" class="screen" hidden>
+    <h2>You died</h2>
+    <p id="death-cause"></p>
+    <button class="btn primary" id="b-respawn" type="button">Respawn</button>
+  </section>
+
+  <div id="tooltip" hidden></div>
+  <div id="cursor-item" hidden><img alt=""><span></span></div>
+  <div id="fatal" hidden></div>
+</div>
