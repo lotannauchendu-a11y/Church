@@ -567,58 +567,75 @@ p { margin: 0; }
 }
 .mission__statement em { color: var(--bronze-dk); }
 
-/* Believe -> Live -> Share is a real progression, so it reads left to right along a path */
-.path {
+.mission__parts {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.5rem, 1rem + 2.5vw, 3rem);
-  margin: clamp(2.5rem, 2rem + 2vw, 4rem) 0 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 1rem + 3vw, 4rem);
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+}
+.mission__part {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--bronze);
+  min-width: 0;
+}
+.mission__word {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-2);
+  line-height: 1.2;
+  color: var(--pine);
+}
+.mission__part > p { color: var(--ink-2); }
+.mission__part .verse p { font-size: 1.2rem; }
+
+/* The four generations of 2 Timothy 2:2 really are a sequence, so they sit on one line */
+.chain {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0.5rem 0 0;
   padding: 0;
   list-style: none;
-  counter-reset: path;
 }
-.path__step {
+.chain li {
   position: relative;
-  padding-top: 2rem;
+  padding-top: 1.6rem;
+  padding-right: 0.5rem;
   min-width: 0;
-  counter-increment: path;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bronze-dk);
 }
-.path__step::before {
+.chain li::before {
   content: "";
   position: absolute;
-  top: 0.45rem;
+  top: 0.42rem;
   left: 0;
-  right: calc(-1 * clamp(1.5rem, 1rem + 2.5vw, 3rem));
+  right: 0;
   height: 1px;
   background: var(--bronze);
 }
-.path__step:last-child::before { right: 0; }
-.path__step::after {
+.chain li:last-child::before { right: auto; width: 0.85rem; }
+.chain li::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 0.95rem;
-  height: 0.95rem;
+  width: 0.85rem;
+  height: 0.85rem;
   border-radius: 50%;
   background: var(--sand);
   border: 2px solid var(--bronze);
 }
-.path__word {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--step-2);
-  color: var(--pine);
-  margin-bottom: 0.6rem;
-}
-.path__step p { color: var(--ink-2); }
+.chain li:first-child::after { background: var(--bronze); }
 
 @media (max-width: 760px) {
-  .path { grid-template-columns: 1fr; }
-  .path__step { padding-top: 0; padding-left: 2rem; }
-  .path__step::before { top: 0.5rem; bottom: calc(-1 * clamp(1.5rem, 1rem + 2.5vw, 3rem)); left: 0.45rem; right: auto; width: 1px; height: auto; }
-  .path__step:last-child::before { display: none; }
-  .path__step::after { top: 0.1rem; }
+  .mission__parts { grid-template-columns: 1fr; }
 }
 
 /* ---------- Visit ---------- */

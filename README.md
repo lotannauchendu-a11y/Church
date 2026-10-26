@@ -2,6 +2,8 @@
 
 Concept website for Calvary Hill Church (formerly Omni Fellowship), 330 S. Clark Rd, Cedar Hill, TX.
 
+Mission: we exist to treasure Jesus above all and make disciples who make disciples.
+
 It is a static site: plain HTML, CSS and JavaScript with no build step, so it can be hosted on GitHub Pages, Netlify, or any web host.
 
 ## Run it locally
