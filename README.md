@@ -8,7 +8,7 @@ It is a static site: plain HTML, CSS and JavaScript with no build step, so it ca
 
 ## Concepts
 
-- **Main page** (`index.html`): the simple, photo-ready design. Dark pine hero, short copy, one idea per section.
+- **Main site**: the simple, photo-ready design. Dark pine hero, short copy, one idea per section. Pages: `index.html` (home), `visit.html`, `about.html`, `beliefs.html`, `connect.html`, `kids.html`, `give.html`.
 - **Hillside** (`concepts/hillside/`): the first concept, with watercolor hills and fuller copy. Kept for reference.
 
 Both share the logo files in `assets/brand/`.
@@ -20,10 +20,10 @@ Drop photos into `assets/photos/` with these names and they appear automatically
 | File          | Where it shows                                  |
 |---------------|-------------------------------------------------|
 | `hero.jpg`    | Behind the top section, toned into the green    |
-| `sunday.jpg`  | Next to "New here? We'd love to meet you."      |
-| `groups.jpg`  | Gathering Groups tile                           |
-| `kids.jpg`    | Calvary Hill Kids tile                          |
-| `serve.jpg`   | Serve tile                                      |
+| `sunday.jpg`  | Home "New here?" section and Plan a Visit page  |
+| `groups.jpg`  | Gathering Groups tile and Connect page          |
+| `kids.jpg`    | Calvary Hill Kids tile and Kids page            |
+| `serve.jpg`   | Serve tile and Connect page                     |
 
 Landscape photos at least 1600px wide work best for `hero.jpg` and `sunday.jpg`; the tiles crop to a tall 4:5 frame.
 
@@ -38,9 +38,12 @@ Then open http://localhost:8000.
 ## Structure
 
 ```
-index.html              Main page
-css/styles.css          Main page styles; brand colors and fonts are tokens at the top
-js/main.js              Mobile menu and photo loading
+index.html              Home page
+visit.html, about.html, beliefs.html, connect.html, kids.html, give.html
+                        Inner pages (shared header and footer)
+css/styles.css          Styles for every page; brand colors and fonts are tokens at the top
+js/main.js              Mobile menu, photo loading, current group season
+CHURCHCO.md             How to rebuild these pages in Church Co
 assets/brand/           Web logo files cut from the logo concepts
 assets/brand/source/    Original logo files and make_assets.py, which regenerates
                         the web files: python3 assets/brand/source/make_assets.py assets/brand
@@ -68,4 +71,5 @@ Fonts (Google Fonts): Jost for headings and text (close to "CHURCH" in the logo 
 - Church Center links still point to the old `omnifellowship.churchcenter.com` address, and the prayer-pledge and plan-a-visit links go to the Church Center home page
 - A contact email on the new domain (the footers show only the phone number for now)
 - Real photos for the hero and the photo slots
-- Elder and staff names and titles for an About / Leadership page
+- Elder names, titles and photos on the About page (Steve's last name is taken from his email address)
+- Kids check-in process and age groups on the Kids page

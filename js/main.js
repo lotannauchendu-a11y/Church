@@ -34,6 +34,13 @@
     img.src = el.getAttribute('data-photo');
   });
 
+  /* Gathering Group season that is meeting now */
+  var month = new Date().getMonth();
+  document.querySelectorAll('.season').forEach(function (el) {
+    var months = el.dataset.months.split(',').map(Number);
+    if (months.indexOf(month) !== -1) el.classList.add('is-current');
+  });
+
   var year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
 })();
