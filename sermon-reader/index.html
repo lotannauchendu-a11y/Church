@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- app:start -->
+<title>Sermon Rehearsal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Young+Serif&display=swap">
+<style>
+/* Layout: one reading column (~65ch) with a settings rail beside it; transport pinned to the bottom edge. */
+:root {
+  --paper: #f1f3f0;
+  --surface: #ffffff;
+  --ink: #1c2220;
+  --muted: #5a6560;
+  --line: #d4dad5;
+  --accent: #2c5a4d;
+  --accent-ink: #ffffff;
+  --mark: #efe2a0;
+  --mark-ink: #1c2220;
+  --font-display: "Young Serif", Georgia, "Times New Roman", serif;
+  --font-read: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bar-h: 76px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111614; --surface: #19201d; --ink: #e4eae6; --muted: #98a59f; --line: #2a3430;
+    --accent: #84c2ad; --accent-ink: #0d1412; --mark: #4b4321; --mark-ink: #f6f0d2; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111614; --surface: #19201d; --ink: #e4eae6; --muted: #98a59f; --line: #2a3430;
+  --accent: #84c2ad; --accent-ink: #0d1412; --mark: #4b4321; --mark-ink: #f6f0d2; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.5 var(--font-ui);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-bottom: calc(var(--bar-h) + 24px + env(safe-area-inset-bottom, 0px));
+}
+button, select, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1100px; margin: 0 auto; }
+header.top {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px;
+  padding-block: 28px 18px; border-bottom: 1px solid var(--line);
+}
+header.top h1 { font: 400 28px/1.15 var(--font-display); margin: 0; letter-spacing: -0.01em; }
+header.top p { margin: 0; color: var(--muted); max-width: 52ch; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 32px; padding-block: 24px; }
+@media (max-width: 860px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* Reading column */
+.doc { min-width: 0; }
+.doc-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.doc-title { font: 400 22px/1.25 var(--font-display); margin: 0; text-wrap: balance; }
+.meta { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.badge {
+  display: inline-block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); margin-left: 8px;
+}
+.text { font: 19px/1.7 var(--font-read); max-width: 65ch; }
+.text p { margin: 0 0 1.1em; }
+.text h3 { font: 600 15px/1.4 var(--font-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin: 1.8em 0 0.6em; }
+.text h3:first-child { margin-top: 0; }
+.s { cursor: pointer; border-radius: 3px; transition: background-color .2s, filter .2s; }
+.s:hover { background: color-mix(in srgb, var(--mark) 40%, transparent); }
+.s.now { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.covered .s:not(.now) { filter: blur(5px); }
+.covered .s:not(.now):hover { filter: none; }
+@media (prefers-reduced-motion: reduce) { .s { transition: none; } }
+
+/* Settings rail */
+.rail { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.panel h2 { font: 600 12px/1 var(--font-ui); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label, .row label { font-size: 13px; font-weight: 500; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hint { font-size: 12.5px; color: var(--muted); margin: 0; }
+select, input[type="number"] {
+  width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper);
+}
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex: none; }
+.val { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+  padding: 9px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); font-weight: 500;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* Import sheet */
+.import { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 12px; }
+.import h2 { font: 400 20px/1.2 var(--font-display); margin: 0; }
+.import ol { margin: 0; padding-left: 20px; color: var(--muted); }
+.import textarea {
+  width: 100%; min-height: 220px; resize: vertical; padding: 12px; border-radius: 8px;
+  border: 1px dashed var(--line); background: var(--paper); font: 16px/1.55 var(--font-read);
+}
+.import textarea.drag { border-color: var(--accent); }
+.import .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.err { color: #b3261e; font-size: 13px; margin: 0; }
+:root[data-theme="dark"] .err { color: #f2b8b5; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .err { color: #f2b8b5; } }
+
+/* Transport bar */
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding-top: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.bar-in { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.transport { display: flex; align-items: center; gap: 6px; }
+.icon {
+  width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface);
+  display: inline-grid; place-items: center; cursor: pointer; padding: 0;
+}
+.icon:hover { border-color: var(--accent); }
+.icon svg { width: 18px; height: 18px; fill: currentColor; }
+.icon.play { width: 54px; height: 54px; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.icon.play svg { width: 22px; height: 22px; }
+.progress { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.track { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; cursor: pointer; }
+.fill { height: 100%; width: 0; background: var(--accent); }
+.status { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.status span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Sermon Rehearsal</h1>
+    <p>Paste your sermon from Logos and hear it read back, sentence by sentence, so it moves from the page into your heart.</p>
+  </header>
+
+  <div class="layout">
+    <main class="doc">
+      <section class="import" id="importer" hidden>
+        <h2>Bring in a sermon</h2>
+        <ol>
+          <li>In Logos, open your sermon and click into the text.</li>
+          <li>Press <strong>⌘A</strong> to select it all, then <strong>⌘C</strong> to copy.</li>
+          <li>Click the box below and press <strong>⌘V</strong>. You can also drop a .txt, .docx, .rtf or .md file here.</li>
+        </ol>
+        <textarea id="pasteBox" placeholder="Paste your sermon here…" aria-label="Sermon text"></textarea>
+        <p class="err" id="importErr" hidden></p>
+        <div class="actions">
+          <button class="btn primary" id="useText" type="button">Load sermon</button>
+          <label class="btn" for="fileInput">Choose a file…</label>
+          <input type="file" id="fileInput" accept=".txt,.md,.docx,.rtf,text/plain" hidden>
+          <button class="btn" id="cancelImport" type="button">Cancel</button>
+        </div>
+      </section>
+
+      <div class="doc-head">
+        <h2 class="doc-title" id="docTitle">Untitled sermon</h2>
+        <button class="btn" id="newSermon" type="button">Paste a new sermon</button>
+      </div>
+      <div class="meta" id="docMeta"></div>
+      <article class="text" id="text" aria-live="off" style="margin-top:20px"></article>
+    </main>
+
+    <aside class="rail">
+      <section class="panel">
+        <h2>Voice</h2>
+        <div class="field">
+          <label for="voice">Reader</label>
+          <select id="voice"></select>
+          <p class="hint" id="voiceHint"></p>
+        </div>
+        <div class="field">
+          <div class="row"><label for="rate">Speed</label><span class="val" id="rateVal">1.00×</span></div>
+          <input type="range" id="rate" min="0.6" max="1.8" step="0.05" value="1">
+        </div>
+        <button class="btn" id="testVoice" type="button">Hear a sample</button>
+      </section>
+
+      <section class="panel">
+        <h2>Rehearsal</h2>
+        <div class="field">
+          <div class="row"><label for="paraGap">Pause between paragraphs</label><span class="val" id="paraGapVal">1.2 s</span></div>
+          <input type="range" id="paraGap" min="0" max="5" step="0.1" value="1.2">
+        </div>
+        <div class="row">
+          <label for="echo">Repeat-after-me pauses</label>
+          <input type="checkbox" id="echo">
+        </div>
+        <p class="hint">Leaves silence after each sentence, about as long as the sentence, so you can say it back out loud.</p>
+        <div class="field">
+          <label for="repeat">Read each paragraph</label>
+          <select id="repeat">
+            <option value="1">Once</option>
+            <option value="2">Twice</option>
+            <option value="3">3 times</option>
+            <option value="4">4 times</option>
+          </select>
+        </div>
+        <div class="row">
+          <label for="cover">Cover the text</label>
+          <input type="checkbox" id="cover">
+        </div>
+        <p class="hint">Blurs everything except the line being read. Hover a line to peek.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Shortcuts</h2>
+        <p class="hint"><strong>Space</strong> play or pause · <strong>← →</strong> sentence · <strong>↑ ↓</strong> paragraph · click any sentence to start there.</p>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="transport">
+      <button class="icon" id="prevPara" type="button" aria-label="Previous paragraph" title="Previous paragraph (↑)">
+        <svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+      </button>
+      <button class="icon" id="prevSent" type="button" aria-label="Previous sentence" title="Previous sentence (←)">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14L3 12zM21 5v14l-9-7z"/></svg>
+      </button>
+      <button class="icon play" id="play" type="button" aria-label="Play">
+        <svg viewBox="0 0 24 24" id="playIcon"><path d="M7 4v16l13-8z"/></svg>
+      </button>
+      <button class="icon" id="nextSent" type="button" aria-label="Next sentence" title="Next sentence (→)">
+        <svg viewBox="0 0 24 24"><path d="M3 5v14l9-7zM12 5v14l9-7z"/></svg>
+      </button>
+      <button class="icon" id="nextPara" type="button" aria-label="Next paragraph" title="Next paragraph (↓)">
+        <svg viewBox="0 0 24 24"><path d="M4 5v14l11-7zM16 5h2v14h-2z"/></svg>
+      </button>
+    </div>
+    <div class="progress">
+      <div class="track" id="track"><div class="fill" id="fill"></div></div>
+      <div class="status"><span id="where">Ready</span><span id="remain"></span></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var SAMPLE_TITLE = "Peace, Be Still";
+  var SAMPLE = [
+    "Peace, Be Still",
+    "Mark 4:35-41",
+    "Introduction",
+    "Some storms come with warning. You see the clouds gathering and you have time to get ready. Other storms come out of nowhere. One phone call, one doctor's report, one conversation, and the sea that was calm an hour ago is pouring into your boat.",
+    "That is where we find the disciples in Mark 4. They have just spent the day hearing Jesus teach about the kingdom. Now evening comes, and Jesus says, \"Let us go across to the other side.\"",
+    "1. Obedience does not exempt us from storms",
+    "Notice that the disciples are in the boat because Jesus told them to be there. They did not wander into this storm through disobedience. They sailed into it by following Him. We sometimes assume that if we are in the will of God, the water will stay smooth. Mark 4 says otherwise.",
+    "2. The Lord in the boat is not absent",
+    "While the waves break over the side, Jesus is asleep on a cushion. The disciples cry out, \"Teacher, do you not care that we are perishing?\" Their question is our question. But His rest was not indifference. It was the calm of the One who holds the sea in His hand.",
+    "3. His word is stronger than the wind",
+    "He rises and rebukes the wind and says to the sea, \"Peace! Be still!\" And there is a great calm. The same voice that spoke light into darkness in Genesis 1 speaks peace into this storm. Compare Psalm 107:29, where the Lord makes the storm be still and hushes the waves of the sea.",
+    "Conclusion",
+    "So before you ask whether He will calm your storm, ask the question the disciples asked afterward: \"Who then is this?\" When you know who is in the boat with you, you can rest, even before the wind dies down."
+  ].join("\n");
+
+  var NOVELTY = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox|Deranged|Hysterical|Pipe Organ|Fred|Junior|Ralph|Kathy|Grandma|Grandpa|Eddy|Flo|Reed|Rocko|Sandy|Shelley)\b/i;
+  var PREACH_WPM = 130;
+  var READ_WPM = 175;
+
+  var synth = window.speechSynthesis;
+  var $ = function (id) { return document.getElementById(id); };
+  var els = {
+    text: $("text"), title: $("docTitle"), meta: $("docMeta"), voice: $("voice"), voiceHint: $("voiceHint"),
+    rate: $("rate"), rateVal: $("rateVal"), paraGap: $("paraGap"), paraGapVal: $("paraGapVal"),
+    echo: $("echo"), repeat: $("repeat"), cover: $("cover"), play: $("play"), playIcon: $("playIcon"),
+    fill: $("fill"), track: $("track"), where: $("where"), remain: $("remain"),
+    importer: $("importer"), pasteBox: $("pasteBox"), importErr: $("importErr"), fileInput: $("fileInput")
+  };
+
+  var state = {
+    title: SAMPLE_TITLE, raw: SAMPLE, isSample: true,
+    paras: [], flat: [], idx: 0, playing: false, gen: 0, timer: null, repLeft: 1,
+    voices: [], wakeLock: null
+  };
+
+  // ---------- storage (per-browser convenience only) ----------
+  function load(key, fallback) {
+    try { var v = localStorage.getItem("sermonRehearsal." + key); return v === null ? fallback : JSON.parse(v); }
+    catch (e) { return fallback; }
+  }
+  function save(key, value) {
+    try { localStorage.setItem("sermonRehearsal." + key, JSON.stringify(value)); } catch (e) {}
+  }
+
+  // ---------- text preparation ----------
+  var BOOKS = {
+    Gen: "Genesis", Ex: "Exodus", Exod: "Exodus", Lev: "Leviticus", Num: "Numbers", Deut: "Deuteronomy",
+    Josh: "Joshua", Judg: "Judges", Ps: "Psalm", Psa: "Psalm", Pss: "Psalms", Prov: "Proverbs",
+    Eccl: "Ecclesiastes", Eccles: "Ecclesiastes", Song: "Song of Songs", Isa: "Isaiah", Jer: "Jeremiah",
+    Lam: "Lamentations", Ezek: "Ezekiel", Dan: "Daniel", Hos: "Hosea", Obad: "Obadiah", Mic: "Micah",
+    Nah: "Nahum", Hab: "Habakkuk", Zeph: "Zephaniah", Hag: "Haggai", Zech: "Zechariah", Mal: "Malachi",
+    Matt: "Matthew", Mt: "Matthew", Mk: "Mark", Lk: "Luke", Jn: "John", Rom: "Romans", Gal: "Galatians",
+    Eph: "Ephesians", Phil: "Philippians", Col: "Colossians", Phlm: "Philemon", Heb: "Hebrews",
+    Jas: "James", Jude: "Jude", Rev: "Revelation"
+  };
+  var NUMBERED = {
+    Sam: "Samuel", Kgs: "Kings", Chr: "Chronicles", Chron: "Chronicles", Cor: "Corinthians",
+    Thess: "Thessalonians", Tim: "Timothy", Pet: "Peter", Pt: "Peter", Jn: "John", John: "John",
+    Samuel: "Samuel", Kings: "Kings", Chronicles: "Chronicles", Corinthians: "Corinthians",
+    Thessalonians: "Thessalonians", Timothy: "Timothy", Peter: "Peter"
+  };
+  var ORD = { "1": "First", "2": "Second", "3": "Third", "I": "First", "II": "Second", "III": "Third" };
+  var bookRe = new RegExp("\\b(" + Object.keys(BOOKS).join("|") + ")\\.?(?=\\s*\\d)", "g");
+  var numberedRe = new RegExp("\\b(1|2|3|I{1,3})\\s?(" + Object.keys(NUMBERED).join("|") + ")\\b\\.?", "g");
+
+  // Turns written shorthand into what a reader would actually say.
+  function toSpoken(t) {
+    return t
+      .replace(numberedRe, function (_, n, b) { return ORD[n] + " " + NUMBERED[b]; })
+      .replace(bookRe, function (_, b) { return BOOKS[b]; })
+      .replace(/\bvv\.\s*/g, "verses ")
+      .replace(/\bv\.\s*(?=\d)/g, "verse ")
+      .replace(/\bch\.\s*(?=\d)/g, "chapter ")
+      .replace(/\bcf\.\s*/gi, "compare ")
+      .replace(/\be\.g\.,?\s*/gi, "for example, ")
+      .replace(/\bi\.e\.,?\s*/gi, "that is, ")
+      .replace(/\b(KJV|ESV|NIV|NKJV|NASB|CSB|NLT|NRSV|LEB)\b/g, function (m) { return m.split("").join(" "); })
+      .replace(/(\d+):(\d+)\s*[-–—]\s*(\d+)(?!:)/g, "$1:$2 through $3")
+      .replace(/(\d+)\s*[-–—]\s*(\d+)/g, "$1 through $2")
+      .replace(/(\d+):(\d+)/g, "$1, verse $2")
+      .replace(/&/g, " and ")
+      .replace(/https?:\/\/\S+/g, "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+  }
+
+  function cleanLine(line) {
+    return line
+      .replace(/ /g, " ")
+      .replace(/[¹²³⁰-⁹]+/g, "")   // superscript footnote marks
+      .replace(/\[\d+\]/g, "")                               // [1] footnote marks
+      .replace(/^\s*[•●▪◦\-–*]\s+/, "")                     // bullets
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function isHeading(line) {
+    var words = line.split(/\s+/).length;
+    return line.length <= 80 && words <= 10 && !/[.?!:;,"”'’)]$/.test(line);
+  }
+
+  var segmenter = (window.Intl && Intl.Segmenter) ? new Intl.Segmenter("en", { granularity: "sentence" }) : null;
+  function sentences(p) {
+    var out = [];
+    if (segmenter) {
+      for (var it = segmenter.segment(p)[Symbol.iterator](), r = it.next(); !r.done; r = it.next()) {
+        var s = r.value.segment.trim();
+        if (s) out.push(s);
+      }
+    } else {
+      out = (p.match(/[^.!?]+[.!?]+["”’)]*\s*|[^.!?]+$/g) || [p]).map(function (s) { return s.trim(); }).filter(Boolean);
+    }
+    // Rejoin pieces split after common abbreviations ("Dr.", "Mt.", "v.").
+    var merged = [];
+    out.forEach(function (s) {
+      var prev = merged[merged.length - 1];
+      if (prev && /\b(Dr|Mr|Mrs|Ms|St|Mt|Rev|vv?|ch|cf|Gen|Ex|Ps|Prov|Isa|Matt|Rom|Cor|Eph|Phil|Heb)\.$/.test(prev)) {
+        merged[merged.length - 1] = prev + " " + s;
+      } else merged.push(s);
+    });
+    return merged;
+  }
+
+  function parse(raw) {
+    var lines = raw.replace(/\r\n?/g, "\n").split("\n").map(cleanLine).filter(Boolean);
+    return lines.map(function (line) {
+      var heading = isHeading(line);
+      var sents = heading ? [line] : sentences(line);
+      return { heading: heading, sents: sents.map(function (s) { return { text: s, spoken: toSpoken(s) }; }) };
+    });
+  }
+
+  // ---------- rendering ----------
+  function wordCount(s) { return (s.match(/\S+/g) || []).length; }
+
+  function render() {
+    state.paras = parse(state.raw);
+    state.flat = [];
+    els.text.textContent = "";
+    var frag = document.createDocumentFragment();
+    state.paras.forEach(function (p, pi) {
+      var el = document.createElement(p.heading ? "h3" : "p");
+      p.sents.forEach(function (s, si) {
+        var span = document.createElement("span");
+        span.className = "s";
+        span.textContent = s.text;
+        span.dataset.i = state.flat.length;
+        s.el = span;
+        state.flat.push({ p: pi, s: si, sent: s, words: wordCount(s.text) });
+        el.appendChild(span);
+        if (si < p.sents.length - 1) el.appendChild(document.createTextNode(" "));
+      });
+      frag.appendChild(el);
+    });
+    els.text.appendChild(frag);
+
+    els.title.innerHTML = "";
+    els.title.appendChild(document.createTextNode(state.title));
+    if (state.isSample) {
+      var b = document.createElement("span"); b.className = "badge"; b.textContent = "Example";
+      els.title.appendChild(b);
+    }
+    var words = state.flat.reduce(function (n, f) { return n + f.words; }, 0);
+    els.meta.textContent = words.toLocaleString() + " words · about " + Math.max(1, Math.round(words / PREACH_WPM)) +
+      " min in the pulpit at " + PREACH_WPM + " words per minute · " + state.paras.filter(function (p) { return !p.heading; }).length + " paragraphs";
+    if (state.idx >= state.flat.length) state.idx = 0;
+    highlight(false);
+  }
+
+  function highlight(scroll) {
+    var cur = els.text.querySelector(".s.now");
+    if (cur) cur.classList.remove("now");
+    var f = state.flat[state.idx];
+    if (!f) return;
+    f.sent.el.classList.add("now");
+    if (scroll) {
+      var r = f.sent.el.getBoundingClientRect();
+      var barTop = window.innerHeight - els.play.closest(".bar").offsetHeight;
+      if (r.top < 80 || r.bottom > barTop - 40) {
+        f.sent.el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      }
+    }
+    updateProgress();
+    save("pos", { title: state.title, idx: state.idx });
+  }
+
+  function updateProgress() {
+    var total = state.flat.length || 1;
+    els.fill.style.width = (100 * state.idx / total) + "%";
+    var f = state.flat[state.idx];
+    var paraNum = 0, paraTotal = 0;
+    state.paras.forEach(function (p, i) { if (!p.heading) { paraTotal++; if (f && i <= f.p) paraNum = paraTotal; } });
+    var left = 0;
+    for (var i = state.idx; i < state.flat.length; i++) left += state.flat[i].words;
+    var mins = left / (READ_WPM * Number(els.rate.value));
+    els.where.textContent = state.flat.length ? "Paragraph " + Math.max(1, paraNum) + " of " + paraTotal : "Nothing loaded";
+    els.remain.textContent = mins < 1 ? "under a minute left" : "about " + Math.round(mins) + " min left";
+  }
+
+  // ---------- voices ----------
+  function rank(v) {
+    var n = v.name;
+    var score = 0;
+    if (/Premium/i.test(n)) score += 40;
+    else if (/Enhanced|Neural|Natural/i.test(n)) score += 30;
+    else if (/Siri/i.test(n)) score += 25;
+    else if (/^Google/i.test(n)) score += 15;
+    if (/^en[-_]US/i.test(v.lang)) score += 3;
+    if (v.localService) score += 1;
+    return score;
+  }
+
+  function loadVoices() {
+    var all = synth ? synth.getVoices() : [];
+    var english = all.filter(function (v) { return /^en/i.test(v.lang) && !NOVELTY.test(v.name); });
+    if (!english.length) english = all.slice();
+    english.sort(function (a, b) { return rank(b) - rank(a) || a.name.localeCompare(b.name); });
+    state.voices = english;
+    els.voice.textContent = "";
+    english.forEach(function (v, i) {
+      var o = document.createElement("option");
+      o.value = v.voiceURI || v.name;
+      o.textContent = v.name + " · " + v.lang.replace("_", "-");
+      els.voice.appendChild(o);
+    });
+    var saved = load("voice", null);
+    var pick = english.find(function (v) { return (v.voiceURI || v.name) === saved; }) || english[0];
+    if (pick) els.voice.value = pick.voiceURI || pick.name;
+    voiceHint();
+  }
+
+  function currentVoice() {
+    var id = els.voice.value;
+    return state.voices.find(function (v) { return (v.voiceURI || v.name) === id; }) || null;
+  }
+
+  function voiceHint() {
+    if (!synth) { els.voiceHint.textContent = "This browser cannot read aloud. Open this page in Safari or Chrome on your Mac."; return; }
+    if (!state.voices.length) { els.voiceHint.textContent = "Loading voices…"; return; }
+    var best = state.voices.some(function (v) { return rank(v) >= 30; });
+    els.voiceHint.textContent = best
+      ? "Voices marked Premium or Enhanced sound the most natural."
+      : "For a warmer, more natural voice, download a Premium voice on your Mac: System Settings → Accessibility → Spoken Content → System Voice → Manage Voices. Then reopen this page.";
+  }
+
+  // ---------- playback ----------
+  function speak(text, onDone) {
+    var gen = state.gen;
+    var u = new SpeechSynthesisUtterance(text);
+    var v = currentVoice();
+    if (v) { u.voice = v; u.lang = v.lang; }
+    u.rate = Number(els.rate.value);
+    u.onend = function () { if (gen === state.gen) onDone(); };
+    u.onerror = function (e) { if (gen === state.gen && e.error !== "interrupted" && e.error !== "canceled") onDone(); };
+    synth.speak(u);
+  }
+
+  function step() {
+    if (!state.playing) return;
+    var f = state.flat[state.idx];
+    if (!f) { stop(); state.idx = 0; highlight(false); els.where.textContent = "Finished. Press play to start again."; return; }
+    highlight(true);
+    speak(f.sent.spoken || f.sent.text, function () { after(f); });
+  }
+
+  function after(f) {
+    if (!state.playing) return;
+    var rate = Number(els.rate.value);
+    var gap = 0.25;
+    if (els.echo.checked && !state.paras[f.p].heading) gap += f.words * 0.42 / rate + 0.6;
+
+    var p = state.paras[f.p];
+    var lastInPara = f.s === p.sents.length - 1;
+    if (lastInPara) {
+      gap += p.heading ? 0.8 : Number(els.paraGap.value);
+      if (!p.heading && state.repLeft > 1) {
+        state.repLeft--;
+        state.idx -= p.sents.length - 1;
+        return wait(gap);
+      }
+      state.repLeft = Number(els.repeat.value);
+    }
+    state.idx++;
+    wait(gap);
+  }
+
+  function wait(seconds) {
+    var gen = state.gen;
+    clearTimeout(state.timer);
+    state.timer = setTimeout(function () { if (gen === state.gen) step(); }, seconds * 1000);
+  }
+
+  function play() {
+    if (!synth) { voiceHint(); return; }
+    if (!state.flat.length) return;
+    state.gen++;
+    synth.cancel();
+    state.playing = true;
+    state.repLeft = Number(els.repeat.value);
+    setPlayIcon();
+    keepAwake(true);
+    step();
+  }
+
+  function stop() {
+    state.gen++;
+    state.playing = false;
+    clearTimeout(state.timer);
+    if (synth) synth.cancel();
+    setPlayIcon();
+    keepAwake(false);
+  }
+
+  function jump(i) {
+    var was = state.playing;
+    if (was) { state.gen++; clearTimeout(state.timer); synth.cancel(); }
+    state.idx = Math.max(0, Math.min(state.flat.length - 1, i));
+    state.repLeft = Number(els.repeat.value);
+    highlight(true);
+    if (was) { state.playing = true; setTimeout(step, 60); }
+  }
+
+  function paraStart(pi) {
+    for (var i = 0; i < state.flat.length; i++) if (state.flat[i].p === pi) return i;
+    return state.idx;
+  }
+  function jumpPara(dir) {
+    var f = state.flat[state.idx];
+    if (!f) return;
+    var target = f.p + dir;
+    // Going back from mid-paragraph restarts the current paragraph first.
+    if (dir < 0 && f.s > 0) target = f.p;
+    target = Math.max(0, Math.min(state.paras.length - 1, target));
+    jump(paraStart(target));
+  }
+
+  function setPlayIcon() {
+    els.playIcon.innerHTML = state.playing ? '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>' : '<path d="M7 4v16l13-8z"/>';
+    els.play.setAttribute("aria-label", state.playing ? "Pause" : "Play");
+  }
+
+  function keepAwake(on) {
+    try {
+      if (on && navigator.wakeLock && !state.wakeLock) {
+        navigator.wakeLock.request("screen").then(function (l) { state.wakeLock = l; }).catch(function () {});
+      } else if (!on && state.wakeLock) {
+        state.wakeLock.release().catch(function () {}); state.wakeLock = null;
+      }
+    } catch (e) {}
+  }
+
+  // ---------- importing ----------
+  function showImport(on) {
+    els.importer.hidden = !on;
+    els.importErr.hidden = true;
+    if (on) { stop(); els.pasteBox.value = ""; els.pasteBox.focus(); window.scrollTo({ top: 0 }); }
+  }
+
+  function guessTitle(raw) {
+    var first = raw.split(/\r?\n/).map(cleanLine).filter(Boolean)[0] || "Untitled sermon";
+    return first.length > 70 ? first.slice(0, 67) + "…" : first;
+  }
+
+  function useSermon(raw) {
+    raw = (raw || "").trim();
+    if (wordCount(raw) < 5) { importError("That looks empty. Copy your sermon in Logos with ⌘A then ⌘C, and paste it into the box."); return; }
+    state.raw = raw; state.title = guessTitle(raw); state.isSample = false; state.idx = 0;
+    save("sermon", { title: state.title, raw: raw });
+    showImport(false);
+    render();
+  }
+
+  function importError(msg) { els.importErr.textContent = msg; els.importErr.hidden = false; }
+
+  function rtfToText(rtf) {
+    return rtf
+      .replace(/\\par[d]?/g, "\n")
+      .replace(/\{\\\*[^{}]*\}/g, "")
+      .replace(/\\'([0-9a-f]{2})/gi, function (_, h) { return String.fromCharCode(parseInt(h, 16)); })
+      .replace(/\\u(-?\d+)\??/g, function (_, n) { n = Number(n); return String.fromCharCode(n < 0 ? n + 65536 : n); })
+      .replace(/\{\\(fonttbl|colortbl|stylesheet|info)[\s\S]*?\}\}?/g, "")
+      .replace(/\\[a-z]+-?\d* ?/gi, "")
+      .replace(/[{}]/g, "");
+  }
+
+  function readFile(file) {
+    if (!file) return;
+    var name = file.name.toLowerCase();
+    var reader = new FileReader();
+    if (name.endsWith(".docx")) {
+      if (!window.mammoth) { importError("Word files could not be opened right now. Copy the text from Logos and paste it instead."); return; }
+      reader.onload = function () {
+        mammoth.extractRawText({ arrayBuffer: reader.result })
+          .then(function (r) { els.pasteBox.value = r.value.replace(/\n{2,}/g, "\n"); useSermon(els.pasteBox.value); })
+          .catch(function () { importError("That Word file could not be read. Try copying the text from Logos instead."); });
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      reader.onload = function () {
+        var t = String(reader.result);
+        if (name.endsWith(".rtf") || /^\{\\rtf/.test(t)) t = rtfToText(t);
+        els.pasteBox.value = t;
+        useSermon(t);
+      };
+      reader.readAsText(file);
+    }
+  }
+
+  // ---------- wiring ----------
+  els.play.addEventListener("click", function () { state.playing ? stop() : play(); });
+  $("prevSent").addEventListener("click", function () { jump(state.idx - 1); });
+  $("nextSent").addEventListener("click", function () { jump(state.idx + 1); });
+  $("prevPara").addEventListener("click", function () { jumpPara(-1); });
+  $("nextPara").addEventListener("click", function () { jumpPara(1); });
+  els.text.addEventListener("click", function (e) {
+    var s = e.target.closest(".s");
+    if (!s) return;
+    jump(Number(s.dataset.i));
+    if (!state.playing) play();
+  });
+  els.track.addEventListener("click", function (e) {
+    var r = els.track.getBoundingClientRect();
+    jump(Math.floor((e.clientX - r.left) / r.width * state.flat.length));
+  });
+
+  $("newSermon").addEventListener("click", function () { showImport(true); });
+  $("cancelImport").addEventListener("click", function () { showImport(false); });
+  $("useText").addEventListener("click", function () { useSermon(els.pasteBox.value); });
+  els.fileInput.addEventListener("change", function () { readFile(els.fileInput.files[0]); els.fileInput.value = ""; });
+  ["dragenter", "dragover"].forEach(function (t) {
+    els.pasteBox.addEventListener(t, function (e) { e.preventDefault(); els.pasteBox.classList.add("drag"); });
+  });
+  ["dragleave", "drop"].forEach(function (t) {
+    els.pasteBox.addEventListener(t, function () { els.pasteBox.classList.remove("drag"); });
+  });
+  els.pasteBox.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); readFile(e.dataTransfer.files[0]); }
+  });
+
+  $("testVoice").addEventListener("click", function () {
+    if (!synth) { voiceHint(); return; }
+    stop();
+    state.gen++;
+    speak(toSpoken("The Lord is my shepherd; I shall not want. Ps. 23:1"), function () {});
+  });
+
+  els.voice.addEventListener("change", function () { save("voice", els.voice.value); if (state.playing) jump(state.idx); });
+  els.rate.addEventListener("input", function () { els.rateVal.textContent = Number(els.rate.value).toFixed(2) + "×"; save("rate", els.rate.value); updateProgress(); });
+  els.rate.addEventListener("change", function () { if (state.playing) jump(state.idx); });
+  els.paraGap.addEventListener("input", function () { els.paraGapVal.textContent = Number(els.paraGap.value).toFixed(1) + " s"; save("paraGap", els.paraGap.value); });
+  els.echo.addEventListener("change", function () { save("echo", els.echo.checked); });
+  els.repeat.addEventListener("change", function () { save("repeat", els.repeat.value); state.repLeft = Number(els.repeat.value); });
+  els.cover.addEventListener("change", function () { els.text.classList.toggle("covered", els.cover.checked); save("cover", els.cover.checked); });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.target.closest("textarea, input, select") || e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+    if (k === " ") { e.preventDefault(); state.playing ? stop() : play(); }
+    else if (k === "ArrowLeft") { e.preventDefault(); jump(state.idx - 1); }
+    else if (k === "ArrowRight") { e.preventDefault(); jump(state.idx + 1); }
+    else if (k === "ArrowUp") { e.preventDefault(); jumpPara(-1); }
+    else if (k === "ArrowDown") { e.preventDefault(); jumpPara(1); }
+  });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && state.playing) keepAwake(true); });
+
+  // ---------- start ----------
+  els.rate.value = load("rate", "1");
+  els.rateVal.textContent = Number(els.rate.value).toFixed(2) + "×";
+  els.paraGap.value = load("paraGap", "1.2");
+  els.paraGapVal.textContent = Number(els.paraGap.value).toFixed(1) + " s";
+  els.echo.checked = !!load("echo", false);
+  els.repeat.value = load("repeat", "1");
+  els.cover.checked = !!load("cover", false);
+  els.text.classList.toggle("covered", els.cover.checked);
+
+  var saved = load("sermon", null);
+  if (saved && saved.raw) { state.raw = saved.raw; state.title = saved.title; state.isSample = false; }
+  var pos = load("pos", null);
+  if (pos && pos.title === state.title) state.idx = pos.idx || 0;
+  render();
+
+  if (synth) {
+    loadVoices();
+    if ("onvoiceschanged" in synth) synth.addEventListener("voiceschanged", loadVoices);
+  } else voiceHint();
+})();
+</script>
+<!-- app:end -->
