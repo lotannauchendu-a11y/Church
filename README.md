@@ -8,10 +8,24 @@ It is a static site: plain HTML, CSS and JavaScript with no build step, so it ca
 
 ## Concepts
 
-- **Concept 1, Hillside** (`index.html`): watercolor hills with the brush cross in the hero, fuller copy on every section.
-- **Concept 2, Simple** (`concept-2/`): a quieter, photo-ready layout. Dark pine hero, short copy, one idea per section, photo slots for groups, kids and serving.
+- **Main page** (`index.html`): the simple, photo-ready design. Dark pine hero, short copy, one idea per section.
+- **Hillside** (`concepts/hillside/`): the first concept, with watercolor hills and fuller copy. Kept for reference.
 
 Both share the logo files in `assets/brand/`.
+
+## Photos
+
+Drop photos into `assets/photos/` with these names and they appear automatically. Until a file exists, its spot shows a placeholder.
+
+| File          | Where it shows                                  |
+|---------------|-------------------------------------------------|
+| `hero.jpg`    | Behind the top section, toned into the green    |
+| `sunday.jpg`  | Next to "New here? We'd love to meet you."      |
+| `groups.jpg`  | Gathering Groups tile                           |
+| `kids.jpg`    | Calvary Hill Kids tile                          |
+| `serve.jpg`   | Serve tile                                      |
+
+Landscape photos at least 1600px wide work best for `hero.jpg` and `sunday.jpg`; the tiles crop to a tall 4:5 frame.
 
 ## Run it locally
 
@@ -24,27 +38,27 @@ Then open http://localhost:8000.
 ## Structure
 
 ```
-index.html              Concept 1 home page
-css/styles.css          Concept 1 styles; brand colors and fonts are tokens at the top
-js/main.js              Concept 1 scripts: mobile menu, copy-address button, current
-                        group season, and the watercolor hills + cross in the hero
-concept-2/              Concept 2 home page, styles and script
+index.html              Main page
+css/styles.css          Main page styles; brand colors and fonts are tokens at the top
+js/main.js              Mobile menu and photo loading
 assets/brand/           Web logo files cut from the logo concepts
 assets/brand/source/    Original logo files and make_assets.py, which regenerates
                         the web files: python3 assets/brand/source/make_assets.py assets/brand
+assets/photos/          Church photos (see the table above)
+concepts/hillside/      The first concept (watercolor hills)
 ```
 
 ## Brand
 
-| Token        | Hex       | Use                                    |
-|--------------|-----------|----------------------------------------|
-| `--pine`     | `#2B3A23` | Cross and wordmark green, dark bands   |
-| `--bronze`   | `#9E7542` | Hill strokes, accents                  |
-| `--paper`    | `#F6F1E6` | Logo background, main page background  |
-| `--sand`     | `#ECE4D2` | Alternate light band                   |
-| `--ink`      | `#1F261B` | Body text, footer                      |
+| Token     | Hex       | Use                                  |
+|-----------|-----------|--------------------------------------|
+| `--pine`  | `#26341F` | Hero, give band, buttons             |
+| `--bronze`| `#A27A45` | Hill strokes, labels, accents        |
+| `--bg`    | `#FBF9F4` | Page background                      |
+| `--sand`  | `#F1ECE1` | Alternate light band, photo slots    |
+| `--ink`   | `#1C211A` | Body text, footer                    |
 
-Fonts (Google Fonts): Cinzel for headings (matches the logo's capitals), Cormorant Garamond italic for Scripture, Montserrat for body text and labels (matches "CHURCH" in the lockup).
+Fonts (Google Fonts): Jost for headings and text (close to "CHURCH" in the logo lockup), Cormorant Garamond italic for the one Scripture-style line.
 
 ## Content to confirm before launch
 

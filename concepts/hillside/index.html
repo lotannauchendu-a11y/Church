@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calvary Hill Church · Cedar Hill, Texas</title>
+  <meta name="description" content="Calvary Hill is a gospel-centered church in Cedar Hill, Texas. We exist to treasure Jesus above all and make disciples who make disciples. Sundays at 10:00 AM, 330 S. Clark Rd.">
+  <meta property="og:title" content="Calvary Hill Church">
+  <meta property="og:description" content="A gospel-centered church in Cedar Hill, Texas. Sundays at 10:00 AM.">
+  <meta property="og:image" content="../../assets/brand/og-image.jpg">
+  <meta name="theme-color" content="#2B3A23">
+  <link rel="icon" type="image/png" href="../../assets/brand/favicon-64.png">
+  <link rel="apple-touch-icon" href="../../assets/brand/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="wrap site-header__inner">
+      <a class="brand" href="#top" aria-label="Calvary Hill Church, home">
+        <span class="brand__mark" aria-hidden="true"><span class="brand__hills"></span><span class="brand__cross"></span></span>
+        <span class="brand__word">
+          <span class="brand__name">Calvary Hill</span>
+          <span class="brand__sub">Church</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+        <span>Menu</span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <a href="#visit">Visit</a>
+        <a href="#story">Our Story</a>
+        <a href="#groups">Groups</a>
+        <a href="#beliefs">Beliefs</a>
+        <a href="#events">Events</a>
+        <a href="#give">Give</a>
+        <a class="btn btn--pine btn--small" href="#visit">Plan a visit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero: the cross planted on a watercolor hillside (drawn in js/main.js) -->
+    <section class="hero" aria-labelledby="hero-title">
+      <canvas class="hero__land" id="hero-land" aria-hidden="true"></canvas>
+      <div class="wrap hero__inner">
+        <div class="hero__copy" id="hero-copy">
+          <p class="eyebrow">A gospel-centered church in Cedar Hill, Texas</p>
+          <h1 class="hero__title" id="hero-title">
+            <span class="hero__title-a">Rooted at the cross.</span>
+            <span class="hero__title-b">Here for Cedar Hill.</span>
+          </h1>
+          <p class="hero__lede">Calvary Hill is a church family on South Clark Road. Each Sunday we gather to worship Jesus and open the Bible together. We exist to treasure Jesus above all and make disciples who make disciples. Whether you have followed Jesus for years or you are still asking questions, you are welcome here.</p>
+          <div class="hero__actions">
+            <a class="btn btn--pine" href="#visit">Plan your visit</a>
+            <a class="btn btn--line" href="#story">Why Calvary Hill?</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The pine band continues the front hill of the hero -->
+    <section class="band band--pine welcome" aria-labelledby="welcome-title">
+      <div class="wrap">
+        <dl class="sunday-strip">
+          <div>
+            <dt>Sunday worship</dt>
+            <dd>10:00 AM</dd>
+          </div>
+          <div>
+            <dt>Where</dt>
+            <dd>330 S. Clark Rd, Cedar Hill</dd>
+          </div>
+          <div>
+            <dt>Kids</dt>
+            <dd>Nursery &amp; classes during service</dd>
+          </div>
+        </dl>
+
+        <div class="welcome__head">
+          <p class="eyebrow eyebrow--light">Come as you are</p>
+          <h2 class="section-title" id="welcome-title">Whatever you’re carrying, there’s room at the cross.</h2>
+        </div>
+
+        <div class="triad">
+          <article class="triad__item">
+            <h3 class="triad__word">Belong</h3>
+            <p>You were made for more than a seat in a crowd. Here you’ll find a church family that learns your name, prays for you, and walks with you through every season.</p>
+            <blockquote class="verse verse--light">
+              <p>“You are fellow citizens with the saints and members of the household of God.”</p>
+              <cite>Ephesians 2:19</cite>
+            </blockquote>
+          </article>
+          <article class="triad__item">
+            <h3 class="triad__word">Find Peace</h3>
+            <p>Jesus invites the weary and the anxious to come to him. Through his death and resurrection, we can have peace with God and real rest for our souls.</p>
+            <blockquote class="verse verse--light">
+              <p>“Come to me, all who labor and are heavy laden, and I will give you rest.”</p>
+              <cite>Matthew 11:28</cite>
+            </blockquote>
+          </article>
+          <article class="triad__item">
+            <h3 class="triad__word">Be Spirit-Led</h3>
+            <p>God’s Spirit gives new life, helps us understand his Word, and shapes us day by day to look more like Jesus.</p>
+            <blockquote class="verse verse--light">
+              <p>“If we live by the Spirit, let us also keep in step with the Spirit.”</p>
+              <cite>Galatians 5:25</cite>
+            </blockquote>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper story" id="story" aria-labelledby="story-title">
+      <div class="wrap story__grid">
+        <figure class="story__figure">
+          <div class="two-hills">
+            <img src="../../assets/brand/mark-color.png" width="1080" height="602" alt="The Calvary Hill mark: a brushstroke cross standing where two hills meet.">
+            <span class="two-hills__label two-hills__label--left">Calvary</span>
+            <span class="two-hills__label two-hills__label--right">Cedar Hill</span>
+          </div>
+          <figcaption>In our mark, the cross stands where two hills meet: the hill where Jesus died for us, and the city where he has sent us.</figcaption>
+        </figure>
+
+        <div class="story__copy">
+          <p class="eyebrow">Our new name</p>
+          <h2 class="section-title" id="story-title">Why Calvary Hill?</h2>
+          <p>Calvary is the hill outside Jerusalem where Jesus was crucified. There the Son of God gave his life for sinners, and three days later he rose from the dead. Everything we are as a church flows from that hill.</p>
+          <p>Cedar Hill is the city God has given us to love. Our new name holds the two together: the good news of Calvary, planted in the middle of our community.</p>
+          <blockquote class="verse">
+            <p>“But far be it from me to boast except in the cross of our Lord Jesus Christ.”</p>
+            <cite>Galatians 6:14</cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--sand mission" aria-labelledby="mission-title">
+      <div class="wrap">
+        <p class="eyebrow">Our mission</p>
+        <h2 class="mission__statement" id="mission-title">We exist to <em>treasure Jesus above all</em> and make <em>disciples who make disciples</em>.</h2>
+        <div class="mission__parts">
+          <article class="mission__part">
+            <h3 class="mission__word">Treasure Jesus above all</h3>
+            <p>Jesus is worth more than anything this world can offer. We want our worship, our homes, our time, and our plans to show that he is our greatest joy.</p>
+            <blockquote class="verse">
+              <p>“I count everything as loss because of the surpassing worth of knowing Christ Jesus my Lord.”</p>
+              <cite>Philippians 3:8</cite>
+            </blockquote>
+          </article>
+          <article class="mission__part">
+            <h3 class="mission__word">Make disciples who make disciples</h3>
+            <p>Following Jesus was never meant to stop with us. We help one another grow in God’s Word and prayer, then pass on what we have received to the next person: our kids, our Gathering Groups, and our neighbors in Cedar Hill.</p>
+            <blockquote class="verse">
+              <p>“What you have heard from me in the presence of many witnesses entrust to faithful men, who will be able to teach others also.”</p>
+              <cite>2 Timothy 2:2</cite>
+            </blockquote>
+            <ol class="chain" aria-label="Four generations of disciples in 2 Timothy 2:2">
+              <li>Paul</li>
+              <li>Timothy</li>
+              <li>Faithful men</li>
+              <li>Others also</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--paper visit" id="visit" aria-labelledby="visit-title">
+      <div class="wrap visit__grid">
+        <div class="visit__main">
+          <p class="eyebrow">Plan your visit</p>
+          <h2 class="section-title" id="visit-title">Your first Sunday</h2>
+          <p class="section-lede">Visiting a new church can feel like a big step. Here’s what to expect, so you can walk in knowing what’s ahead.</p>
+
+          <dl class="expect">
+            <div class="expect__row">
+              <dt>When</dt>
+              <dd>Sundays at 10:00 AM. Come a few minutes early to get settled and check in your kids.</dd>
+            </div>
+            <div class="expect__row">
+              <dt>Worship</dt>
+              <dd>We sing, pray, read Scripture together, and hear a sermon that works through a book of the Bible, passage by passage.</dd>
+            </div>
+            <div class="expect__row">
+              <dt>Kids</dt>
+              <dd>Calvary Hill Kids begins with a nursery for babies and toddlers, with classes where children hear the good news of Jesus every week. Our volunteers are trained to keep your kids safe.</dd>
+            </div>
+            <div class="expect__row">
+              <dt>What to wear</dt>
+              <dd>Whatever you’re comfortable in. You’ll see jeans, and you’ll see Sunday clothes.</dd>
+            </div>
+            <div class="expect__row">
+              <dt>Afterward</dt>
+              <dd>Stay and say hello. Our pastors would love to meet you, pray with you, and answer any questions.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <aside class="visit__aside" aria-label="Location">
+          <div class="photo-slot" role="img" aria-label="Photo placeholder for Sunday worship">
+            <span>Photo: Sunday worship at 330 S. Clark Rd</span>
+          </div>
+          <div class="address-card">
+            <p class="address-card__label">Find us</p>
+            <address class="address-card__addr" id="church-address">330 S. Clark Rd<br>Cedar Hill, TX 75104</address>
+            <div class="address-card__actions">
+              <a class="btn btn--pine btn--small" href="https://www.google.com/maps/search/?api=1&amp;query=330+S+Clark+Rd+Cedar+Hill+TX+75104" target="_blank" rel="noopener">Get directions</a>
+              <button class="btn btn--line btn--small" type="button" id="copy-address" data-copy="330 S. Clark Rd, Cedar Hill, TX 75104">Copy address</button>
+            </div>
+            <p class="address-card__meta">Questions? Call <a href="tel:+19726373101">972-637-3101</a></p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="band band--pine groups" id="groups" aria-labelledby="groups-title">
+      <div class="wrap groups__grid">
+        <div class="groups__intro">
+          <p class="eyebrow eyebrow--light">Gathering Groups</p>
+          <h2 class="section-title" id="groups-title">Find your people.</h2>
+          <p class="section-lede">Gathering Groups are small communities that meet in homes during the week to open God’s Word, pray, and do real life together. They’re the best way to go from attending Calvary Hill to belonging here.</p>
+
+          <ul class="seasons" aria-label="Group seasons">
+            <li class="season" data-months="0,1,2"><span class="season__name">Winter</span><span class="season__months">Jan – Mar</span></li>
+            <li class="season" data-months="3,4,5"><span class="season__name">Spring</span><span class="season__months">Apr – Jun</span></li>
+            <li class="season" data-months="8,9,10"><span class="season__name">Fall</span><span class="season__months">Sep – Nov</span></li>
+          </ul>
+          <p class="groups__note">Sign-ups open before each season. Summer is a season of rest for our leaders.</p>
+
+          <div class="groups__actions">
+            <a class="btn btn--bronze" href="https://omnifellowship.churchcenter.com/groups" target="_blank" rel="noopener">Browse groups</a>
+            <a class="text-link text-link--light" href="https://omnifellowship.churchcenter.com/" target="_blank" rel="noopener">Interested in hosting or leading?</a>
+          </div>
+        </div>
+
+        <ul class="pillars">
+          <li class="pillar">
+            <h3 class="pillar__word">Connect</h3>
+            <p>Building intentional, Christ-centered community where you are known.</p>
+          </li>
+          <li class="pillar">
+            <h3 class="pillar__word">Grow</h3>
+            <p>Growing in our knowledge and understanding of who the real Jesus is.</p>
+          </li>
+          <li class="pillar">
+            <h3 class="pillar__word">Share</h3>
+            <p>Sharing our ups and downs, our highs and lows, our summits and our valleys.</p>
+          </li>
+          <li class="pillar">
+            <h3 class="pillar__word">Serve</h3>
+            <p>Living with a heart of service toward one another, our church, and our city.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="band band--paper beliefs" id="beliefs" aria-labelledby="beliefs-title">
+      <div class="wrap">
+        <div class="beliefs__head">
+          <div>
+            <p class="eyebrow">What we believe</p>
+            <h2 class="section-title" id="beliefs-title">Anchored in the gospel</h2>
+          </div>
+          <p class="section-lede">These are the truths we build our lives on. We are part of the <a class="text-link" href="https://www.acts29.com" target="_blank" rel="noopener">Acts 29 Network</a>, a global family of church-planting churches.</p>
+        </div>
+
+        <div class="beliefs__grid">
+          <article class="belief">
+            <h3>The Bible</h3>
+            <p>Scripture is the inspired, inerrant, and sufficient Word of God, our final authority for what we believe and how we live.</p>
+            <p class="belief__refs">2 Timothy 3:16–17 · 2 Peter 1:21</p>
+          </article>
+          <article class="belief">
+            <h3>God</h3>
+            <p>There is one God, eternally existing in three persons: Father, Son, and Holy Spirit. He is sovereign over all things, including our salvation.</p>
+            <p class="belief__refs">Matthew 28:19 · Ephesians 1:4–5</p>
+          </article>
+          <article class="belief">
+            <h3>The Gospel</h3>
+            <p>Salvation is by grace alone, through faith alone, in Christ alone, to the glory of God alone. Jesus calls everyone to repent and believe.</p>
+            <p class="belief__refs">Ephesians 2:8–9 · Romans 1:16–17</p>
+          </article>
+          <article class="belief">
+            <h3>New Life</h3>
+            <p>The Holy Spirit gives new birth, unites us to Christ, and keeps every one of his people to the end.</p>
+            <p class="belief__refs">John 3:3–8 · Philippians 1:6</p>
+          </article>
+          <article class="belief">
+            <h3>The Church</h3>
+            <p>The church is a gathered body of baptized believers, shepherded by elders and sent to make disciples of all nations.</p>
+            <p class="belief__refs">Matthew 28:18–20 · 1 Peter 5:1–4</p>
+          </article>
+          <article class="belief">
+            <h3>Christ’s Return</h3>
+            <p>Jesus will return in glory to judge the living and the dead and to make all things new.</p>
+            <p class="belief__refs">Acts 17:31 · Revelation 21:5</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--sand events" id="events" aria-labelledby="events-title">
+      <div class="wrap">
+        <div class="events__head">
+          <div>
+            <p class="eyebrow">Happening at Calvary Hill</p>
+            <h2 class="section-title" id="events-title">Upcoming</h2>
+          </div>
+          <a class="text-link" href="https://omnifellowship.churchcenter.com/calendar" target="_blank" rel="noopener">See the full calendar</a>
+        </div>
+
+        <ul class="event-list">
+          <li class="event">
+            <p class="event__date"><span class="event__dow">Sat</span><span class="event__day">31</span><span class="event__mon">Oct</span></p>
+            <div class="event__body">
+              <h3>Fall Festival</h3>
+              <p class="event__meta">5:00 – 7:00 PM · 330 S. Clark Rd</p>
+              <p>Candy, games, and snacks for the whole family, with a short time of worship. Free, and open to all our neighbors.</p>
+            </div>
+          </li>
+          <li class="event">
+            <p class="event__date"><span class="event__dow">Now</span><span class="event__day">30</span><span class="event__mon">Days</span></p>
+            <div class="event__body">
+              <h3>30 Days of Prayer</h3>
+              <p class="event__meta">October – November · Wherever you are</p>
+              <p>Join the church in daily prayer for unity, for our pastors, and for a clear gospel witness in Cedar Hill. Choose 15, 30, or 45 minutes, or an hour each day.</p>
+              <a class="text-link" href="https://omnifellowship.churchcenter.com/" target="_blank" rel="noopener">Take the prayer pledge</a>
+            </div>
+          </li>
+          <li class="event">
+            <p class="event__date"><span class="event__dow">Every</span><span class="event__day">Sun</span><span class="event__mon">10 AM</span></p>
+            <div class="event__body">
+              <h3>Sunday Worship</h3>
+              <p class="event__meta">Sundays at 10:00 AM · 330 S. Clark Rd</p>
+              <p>Worship, prayer, and the preaching of God’s Word, with kids’ classes during the service.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="band band--pine give" id="give" aria-labelledby="give-title">
+      <div class="wrap give__grid">
+        <div>
+          <p class="eyebrow eyebrow--light">Generosity</p>
+          <h2 class="section-title" id="give-title">Give with joy</h2>
+          <p class="section-lede">Giving is an act of worship and a way to take part in what God is doing through his church. Your generosity supports gospel ministry in Cedar Hill, care for neighbors in need, and missions and church planting around the world.</p>
+        </div>
+        <div class="give__side">
+          <blockquote class="verse verse--light verse--large">
+            <p>“Each one must give as he has decided in his heart, not reluctantly or under compulsion, for God loves a cheerful giver.”</p>
+            <cite>2 Corinthians 9:7</cite>
+          </blockquote>
+          <a class="btn btn--bronze" href="https://omnifellowship.churchcenter.com/giving" target="_blank" rel="noopener">Give online</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__grid">
+      <div class="site-footer__brand">
+        <img class="site-footer__badge" src="../../assets/brand/badge-watercolor.webp" width="720" height="720" alt="Calvary Hill Church logo">
+        <p>A gospel-centered church in Cedar Hill, Texas. We exist to treasure Jesus above all and make disciples who make disciples.</p>
+      </div>
+
+      <div class="site-footer__col">
+        <h2>Visit</h2>
+        <p>Sundays at 10:00 AM</p>
+        <address>330 S. Clark Rd<br>Cedar Hill, TX 75104</address>
+      </div>
+
+      <div class="site-footer__col">
+        <h2>Contact</h2>
+        <p><a href="tel:+19726373101">972-637-3101</a></p>
+      </div>
+
+      <div class="site-footer__col">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="#visit">Plan a visit</a></li>
+          <li><a href="#groups">Gathering Groups</a></li>
+          <li><a href="#beliefs">What we believe</a></li>
+          <li><a href="#give">Give</a></li>
+          <li><a href="https://omnifellowship.churchcenter.com/" target="_blank" rel="noopener">Church Center</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap site-footer__base">
+      <p>© <span id="year">2026</span> Calvary Hill Church</p>
+      <p>A member of the <a href="https://www.acts29.com" target="_blank" rel="noopener">Acts 29 Network</a></p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
