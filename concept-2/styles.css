@@ -1,0 +1,475 @@
+/* Calvary Hill Church, concept 2
+   Layout: quiet and photo-ready. A dark pine hero, then light sections separated
+   by space and hairlines, one idea per section, short copy.
+   One deliberate look (no dark theme): the brand colors stay fixed. */
+
+:root {
+  --bg: #fbf9f4;
+  --sand: #f1ece1;
+  --ink: #1c211a;
+  --ink-2: #545b50;
+  --rule: #e2dccd;
+  --pine: #26341f;
+  --pine-hill-1: #2f4028;
+  --pine-hill-2: #2a3a23;
+  --pine-hill-3: #1f2b1a;
+  --bronze: #a27a45;
+  --bronze-dk: #7a5a30;
+  --cream: #f4efe2;
+  --cream-2: #c6cab8;
+  --focus: #b8862f;
+
+  --font-sans: "Jost", "Futura", "Century Gothic", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1200px;
+  --space: clamp(4.5rem, 3rem + 5vw, 8rem);
+  --radius: 2px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--bg);
+}
+
+h1, h2, h3, p { margin: 0; }
+h1, h2 { text-wrap: balance; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 50;
+  padding: 0.6rem 1rem;
+  background: var(--pine);
+  color: var(--cream);
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- Type ---------- */
+
+.label {
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bronze-dk);
+}
+.label--light { color: var(--bronze); }
+
+.title {
+  font-weight: 500;
+  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.9rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.title--large { font-size: clamp(2rem, 1.3rem + 2.8vw, 3.4rem); line-height: 1.12; }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font: 600 0.8rem/1 var(--font-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.btn--dark { background: var(--pine); color: var(--cream); }
+.btn--dark:hover { background: var(--ink); }
+.btn--cream { background: var(--cream); color: var(--pine); }
+.btn--cream:hover { background: #ffffff; }
+.btn--ghost { color: var(--cream); border-color: rgba(244, 239, 226, 0.5); }
+.btn--ghost:hover { border-color: var(--cream); }
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.8rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--pine);
+  text-decoration: none;
+}
+.brand__mark { position: relative; width: 58px; aspect-ratio: 1080 / 602; flex: none; }
+.brand__hills, .brand__cross {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: var(--m) center / 100% 100% no-repeat;
+  mask: var(--m) center / 100% 100% no-repeat;
+}
+.brand__hills { --m: url("../assets/brand/mark-hills.png"); background: var(--bronze); }
+.brand__cross { --m: url("../assets/brand/mark-cross.png"); background: var(--pine); }
+.brand__word { display: grid; line-height: 1; }
+.brand__name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.brand__sub {
+  margin-top: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--bronze-dk);
+}
+
+.site-nav { display: flex; align-items: center; gap: clamp(1.25rem, 2.5vw, 2.25rem); }
+.site-nav a:not(.btn) {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-block: 0.35rem;
+  border-bottom: 1px solid transparent;
+}
+.site-nav a:not(.btn):hover { border-bottom-color: var(--bronze); }
+.site-nav .btn { min-height: 2.6rem; padding-inline: 1.2rem; font-size: 0.72rem; }
+
+.nav-toggle {
+  display: none;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--pine);
+  font: 600 0.75rem/1 var(--font-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media (max-width: 820px) {
+  .nav-toggle { display: inline-flex; align-items: center; }
+  .site-header__inner { flex-wrap: wrap; }
+  .site-nav {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-bottom: 1rem;
+  }
+  .site-nav.is-open { display: flex; }
+  .site-nav a:not(.btn) { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); }
+  .site-nav .btn { margin-top: 1rem; min-height: 3rem; }
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--pine);
+  color: var(--cream);
+}
+.hero__art { position: absolute; inset: 0; pointer-events: none; }
+.hero__hills {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(130px, 22vw, 300px);
+}
+.hill-1 { fill: var(--pine-hill-1); }
+.hill-2 { fill: var(--pine-hill-2); }
+.hill-3 { fill: var(--pine-hill-3); }
+/* Sits on the crest of the back hill (x = 1010 of 1440 in the SVG) */
+.hero__cross {
+  position: absolute;
+  left: 70.1%;
+  bottom: calc(clamp(130px, 22vw, 300px) * 0.55);
+  height: min(70%, 520px);
+  aspect-ratio: 430 / 602;
+  transform: translateX(-50%);
+  background: var(--bronze);
+  opacity: 0.55;
+  -webkit-mask: url("../assets/brand/cross.png") center bottom / contain no-repeat;
+  mask: url("../assets/brand/cross.png") center bottom / contain no-repeat;
+}
+
+.hero__inner {
+  position: relative;
+  padding-top: clamp(5rem, 3rem + 7vw, 9.5rem);
+  padding-bottom: clamp(9rem, 5rem + 14vw, 15rem);
+}
+.hero__title {
+  max-width: 11ch;
+  font-weight: 500;
+  font-size: clamp(2.5rem, 1.3rem + 5.2vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+.hero__sub {
+  max-width: 30rem;
+  margin-top: 1.5rem;
+  font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--cream-2);
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
+
+@media (max-width: 700px) {
+  .hero__inner { padding-bottom: 13rem; }
+  .hero__cross { left: 82%; height: 150px; opacity: 0.45; }
+}
+
+/* ---------- Sundays ---------- */
+
+.sundays { padding-bottom: var(--space); }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 var(--space);
+  border-bottom: 1px solid var(--rule);
+}
+.facts > div { padding: 1.75rem 1.5rem 1.75rem 0; min-width: 0; }
+.facts > div + div { padding-left: 1.5rem; border-left: 1px solid var(--rule); }
+.facts dt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze-dk);
+}
+.facts dd { margin: 0.35rem 0 0; font-size: 1.15rem; font-weight: 500; line-height: 1.4; }
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 1rem + 5vw, 6rem);
+  align-items: center;
+}
+.split__text { display: grid; gap: 1.25rem; justify-items: start; max-width: 28rem; }
+.split__text .label { margin-bottom: -0.25rem; }
+.split__text p:not(.label) { color: var(--ink-2); }
+
+.photo {
+  display: grid;
+  place-items: end start;
+  aspect-ratio: 4 / 3;
+  max-width: 100%;
+  padding: 1rem;
+  background:
+    repeating-linear-gradient(135deg, transparent 0 11px, rgba(38, 52, 31, 0.05) 11px 12px),
+    var(--sand);
+}
+.photo span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+@media (max-width: 760px) {
+  .facts { grid-template-columns: 1fr; }
+  .facts > div, .facts > div + div { padding: 1.25rem 0; border-left: 0; }
+  .facts > div + div { border-top: 1px solid var(--rule); }
+  .split { grid-template-columns: 1fr; }
+}
+
+/* ---------- Belong / Find peace / Be Spirit-led ---------- */
+
+.words {
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+  background: var(--sand);
+}
+.words__line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1em 0.6em;
+  font-weight: 500;
+  font-size: clamp(1.9rem, 1rem + 4vw, 4.2rem);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--pine);
+}
+.words__line span:nth-child(2) { color: var(--bronze-dk); }
+.words__sub {
+  margin-top: 1.25rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem);
+  color: var(--ink-2);
+}
+
+/* ---------- About ---------- */
+
+.about { padding-block: var(--space); }
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(2rem, 1rem + 5vw, 6rem);
+  align-items: end;
+}
+.about__side { display: grid; gap: 1.75rem; color: var(--ink-2); }
+.beliefs { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.beliefs li { padding-block: 0.9rem; border-bottom: 1px solid var(--rule); }
+.beliefs strong { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 860px) {
+  .about__grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Connect ---------- */
+
+.connect { padding-bottom: var(--space); }
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  margin-top: 2.5rem;
+}
+.tile {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  text-decoration: none;
+  min-width: 0;
+}
+.photo--tile { aspect-ratio: 4 / 5; margin-bottom: 0.75rem; }
+.tile__title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  justify-self: start;
+}
+.tile:hover .tile__title { border-bottom-color: var(--bronze); }
+.tile__text { color: var(--ink-2); }
+
+@media (max-width: 760px) {
+  .tiles { grid-template-columns: 1fr; }
+  .photo--tile { aspect-ratio: 3 / 2; }
+}
+
+/* ---------- Give ---------- */
+
+.give {
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem);
+  background: var(--pine);
+  color: var(--cream);
+}
+.give__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.give p:not(.label) { margin-top: 0.75rem; color: var(--cream-2); max-width: 34rem; }
+
+/* ---------- Footer ---------- */
+
+.site-footer { background: var(--ink); color: var(--cream-2); font-size: 0.95rem; }
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  gap: 2.5rem;
+  padding-block: clamp(3.5rem, 3rem + 2vw, 5rem) 2.5rem;
+}
+.site-footer__badge {
+  display: block;
+  width: 132px;
+  aspect-ratio: 1;
+  background: var(--cream);
+  -webkit-mask: url("../assets/brand/badge-mask.png") center / contain no-repeat;
+  mask: url("../assets/brand/badge-mask.png") center / contain no-repeat;
+}
+.site-footer h2 {
+  margin-bottom: 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+.site-footer p, .site-footer address { color: var(--cream); font-style: normal; }
+.site-footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.3rem; }
+.site-footer a { color: var(--cream); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+.site-footer__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid #333a2f;
+  font-size: 0.8rem;
+}
+.site-footer__base p { color: var(--cream-2); }
+
+@media (max-width: 860px) {
+  .site-footer__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .site-footer__badge { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .site-footer__grid { grid-template-columns: 1fr; }
+}

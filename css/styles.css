@@ -191,28 +191,7 @@ p { margin: 0; }
 .btn--bronze { background: var(--bronze-lt); color: var(--pine); }
 .btn--bronze:hover { background: var(--on-pine); }
 
-/* ---------- Notice + header ---------- */
-
-.notice {
-  background: var(--pine);
-  color: var(--on-pine);
-  font-size: var(--step--1);
-}
-.notice__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem 1rem;
-  padding-block: 0.6rem;
-  text-align: center;
-}
-.notice strong { font-weight: 600; }
-.notice a {
-  color: var(--bronze-lt);
-  font-weight: 600;
-  text-underline-offset: 0.25em;
-}
+/* ---------- Header ---------- */
 
 .site-header {
   position: sticky;
@@ -527,24 +506,6 @@ p { margin: 0; }
 .story__copy .section-title { margin-bottom: 0.4rem; }
 .story__copy > p { color: var(--ink-2); }
 
-.same-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0;
-  margin: 0.4rem 0;
-  list-style: none;
-}
-.same-list li {
-  padding: 0.35rem 0.85rem;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--pine);
-}
 .story .verse {
   padding-left: 1.25rem;
   border-left: 2px solid var(--bronze);

@@ -1,10 +1,17 @@
 # Calvary Hill Church website
 
-Concept website for Calvary Hill Church (formerly Omni Fellowship), 330 S. Clark Rd, Cedar Hill, TX.
+Concept website for Calvary Hill Church, 330 S. Clark Rd, Cedar Hill, TX.
 
 Mission: we exist to treasure Jesus above all and make disciples who make disciples.
 
 It is a static site: plain HTML, CSS and JavaScript with no build step, so it can be hosted on GitHub Pages, Netlify, or any web host.
+
+## Concepts
+
+- **Concept 1, Hillside** (`index.html`): watercolor hills with the brush cross in the hero, fuller copy on every section.
+- **Concept 2, Simple** (`concept-2/`): a quieter, photo-ready layout. Dark pine hero, short copy, one idea per section, photo slots for groups, kids and serving.
+
+Both share the logo files in `assets/brand/`.
 
 ## Run it locally
 
@@ -17,10 +24,11 @@ Then open http://localhost:8000.
 ## Structure
 
 ```
-index.html              Home page (all sections)
-css/styles.css          Styles; brand colors and fonts are tokens at the top
-js/main.js              Mobile menu, copy-address button, current group season,
-                        and the watercolor hills + cross drawn in the hero
+index.html              Concept 1 home page
+css/styles.css          Concept 1 styles; brand colors and fonts are tokens at the top
+js/main.js              Concept 1 scripts: mobile menu, copy-address button, current
+                        group season, and the watercolor hills + cross in the hero
+concept-2/              Concept 2 home page, styles and script
 assets/brand/           Web logo files cut from the logo concepts
 assets/brand/source/    Original logo files and make_assets.py, which regenerates
                         the web files: python3 assets/brand/source/make_assets.py assets/brand
@@ -43,7 +51,7 @@ Fonts (Google Fonts): Cinzel for headings (matches the logo's capitals), Cormora
 - Service time (10:00 AM) and whether there is one service or two
 - Kids ministry age groups and check-in time
 - Fall Festival details (Oct 31, 5–7 PM) once the city permit is approved
-- Church Center links: they still use `omnifellowship.churchcenter.com` and the prayer-pledge link goes to the Church Center home page
-- Contact email: still `info@omnifellowship.com`
-- Photos: the "Your first Sunday" section has a placeholder for a real photo
+- Church Center links still point to the old `omnifellowship.churchcenter.com` address, and the prayer-pledge and plan-a-visit links go to the Church Center home page
+- A contact email on the new domain (the footers show only the phone number for now)
+- Real photos for the hero and the photo slots
 - Elder and staff names and titles for an About / Leadership page
